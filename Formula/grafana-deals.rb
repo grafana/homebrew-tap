@@ -7,10 +7,10 @@ class GrafanaDeals < Formula
   depends_on "portaudio"
 
   def install
-    venv = virtualenv_create(libexec, "python3.11")
-    ["bleak", "Pillow", "SpeechRecognition", "pyaudio"].each do |pkg|
-      venv.pip_install pkg
-    end
+    python = Formula["python@3.11"].opt_bin/"python3.11"
+    system python, "-m", "venv", libexec
+    system libexec/"bin/pip", "install", "--upgrade", "pip"
+    system libexec/"bin/pip", "install", "bleak", "Pillow", "SpeechRecognition", "pyaudio"
 
     libexec.install "deal_display.py"
     libexec.install "PressStart2P-Regular.ttf" if (buildpath/"PressStart2P-Regular.ttf").exist?
@@ -20,12 +20,6 @@ class GrafanaDeals < Formula
       exec "#{libexec}/bin/python3" "#{libexec}/deal_display.py" "$@"
     EOS
     chmod 0755, bin/"grafana-deals"
-  end
-
-  def post_install
-    system bin/"grafana-deals", "--bootstrap"
-  rescue StandardError
-    # bootstrap needs a token - user will run --set-token first
   end
 
   def caveats
