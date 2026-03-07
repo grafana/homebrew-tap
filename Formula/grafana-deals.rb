@@ -22,13 +22,17 @@ class GrafanaDeals < Formula
     chmod 0755, bin/"grafana-deals"
   end
 
+  service do
+    run [opt_bin/"grafana-deals"]
+    keep_alive true
+    log_path var/"log/grafana-deals.log"
+    error_log_path var/"log/grafana-deals.log"
+  end
+
   def caveats
     <<~EOS
       Run `grafana-deals --set-token` to add your GitHub token (skip if you use gh CLI).
       Then run `grafana-deals --demo` to test your display.
-
-      To start automatically at login:
-        brew services start grafana/tap/grafana-deals
     EOS
   end
 end
