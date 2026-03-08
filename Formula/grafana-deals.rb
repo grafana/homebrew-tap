@@ -4,13 +4,12 @@ class GrafanaDeals < Formula
   head "https://github.com/grafana/deal-celebration-display.git", branch: "main"
 
   depends_on "python@3.11"
-  depends_on "portaudio"
 
   def install
     python = Formula["python@3.11"].opt_bin/"python3.11"
     system python, "-m", "venv", libexec
     system libexec/"bin/pip", "install", "--upgrade", "pip"
-    system libexec/"bin/pip", "install", "bleak", "Pillow", "SpeechRecognition", "pyaudio"
+    system libexec/"bin/pip", "install", "bleak", "Pillow"
 
     libexec.install "deal_display.py"
     libexec.install "PressStart2P-Regular.ttf" if (buildpath/"PressStart2P-Regular.ttf").exist?
