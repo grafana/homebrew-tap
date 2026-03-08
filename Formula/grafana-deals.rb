@@ -16,6 +16,7 @@ class GrafanaDeals < Formula
 
     (bin/"grafana-deals").write <<~EOS
       #!/bin/bash
+      export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"
       exec "#{libexec}/bin/python3" "#{libexec}/deal_display.py" "$@"
     EOS
     chmod 0755, bin/"grafana-deals"
